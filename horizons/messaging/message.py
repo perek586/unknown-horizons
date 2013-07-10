@@ -234,3 +234,7 @@ class MineEmpty(Message):
 class LoadingProgress(Message):
 	"""Sent when loading screen is updated with a new progress hint."""
 	arguments = ('stage', )
+
+class ActionChanged(Message):
+	"""Sent when a ConcreteObject changed it's action"""
+	pass

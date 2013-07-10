@@ -22,6 +22,7 @@
 import random
 
 from horizons.constants import ACTION_SETS
+from horizons.messaging import ActionChanged
 from horizons.scheduler import Scheduler
 from horizons.util.loaders.actionsetloader import ActionSetLoader
 from horizons.util.python.callback import Callback
@@ -105,6 +106,10 @@ class ConcreteObject(WorldObject):
 			UnitClass.ensure_action_loaded(self._action_set_id, action) # lazy
 			self._instance.act(action+"_"+str(self._action_set_id), facing_loc, repeating)
 		self._action = action
+
+		if (self.is_building or self.is_unit):
+			if self.owner.regular_player:
+				ActionChanged.broadcast(self)
 
 	def has_action(self, action):
 		"""Checks if this unit has a certain action.

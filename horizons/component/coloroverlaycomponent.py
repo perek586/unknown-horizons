@@ -29,6 +29,7 @@ import horizons.globals
 
 from horizons.component import Component
 from horizons.ext.dummy import Dummy
+from horizons.messaging import ActionChanged
 from horizons.scheduler import Scheduler
 from horizons.util.color import Color as UtilColor
 from horizons.util.loaders.actionsetloader import ActionSetLoader
@@ -129,6 +130,10 @@ class ColorOverlayComponent(Component):
 						'Expected either fife.Color or horizons.util.Color.'
 						% (color, to_color))
 			self.change_color(z_order, fife_from, fife_to)
+			ActionChanged.subscribe(self.update_overlay_on_action)
+
+	def update_overlay_on_action(self, message):
+		print "do something"
 
 	def add_overlay(self, overlay_name, z_order):
 		"""Creates color overlay recoloring the area defined in *overlay_set*
