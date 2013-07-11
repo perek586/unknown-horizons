@@ -130,7 +130,7 @@ class ColorOverlayComponent(Component):
 						'Expected either fife.Color or horizons.util.Color.'
 						% (color, to_color))
 			self.change_color(z_order, fife_from, fife_to)
-			ActionChanged.subscribe(self.update_overlay_on_action)
+			ActionChanged.subscribe(self.update_overlay_on_action, self.instance)
 
 	def update_overlay_on_action(self, message):
 		print "do something"

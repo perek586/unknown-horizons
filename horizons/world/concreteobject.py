@@ -22,6 +22,8 @@
 import random
 
 from horizons.constants import ACTION_SETS
+from horizons.component.coloroverlaycomponent import ColorOverlayComponent
+from horizons.component.componentholder import ComponentHolder
 from horizons.messaging import ActionChanged
 from horizons.scheduler import Scheduler
 from horizons.util.loaders.actionsetloader import ActionSetLoader
@@ -107,8 +109,9 @@ class ConcreteObject(WorldObject):
 			self._instance.act(action+"_"+str(self._action_set_id), facing_loc, repeating)
 		self._action = action
 
-		if (self.is_building or self.is_unit):
-			if self.owner.regular_player:
+		# check if ColorOverlayComponent needs an update
+		if isinstance(self, ComponentHolder):
+			if self.has_component(ColorOverlayComponent):
 				ActionChanged.broadcast(self)
 
 	def has_action(self, action):
