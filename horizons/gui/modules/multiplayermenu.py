@@ -389,6 +389,7 @@ class GameLobby(Window):
 
 	def hide(self):
 		self._gui.hide()
+		self.unsubscribe_all()
 
 	def _cancel(self):
 		"""When the lobby is cancelled, close the window and leave the game.
@@ -405,6 +406,7 @@ class GameLobby(Window):
 	def close(self):
 		self.hide()
 
+	def unsubscribe_all(self):
 		NetworkInterface().unsubscribe("lobbygame_chat", self._on_chat_message)
 		NetworkInterface().unsubscribe("lobbygame_join", self._on_player_joined)
 		NetworkInterface().unsubscribe("lobbygame_leave", self._on_player_left)
