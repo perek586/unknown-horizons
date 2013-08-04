@@ -88,6 +88,15 @@ class ConcreteObject(WorldObject):
 			self._instance.setActionRuntime(runtime)
 		Scheduler().add_new_object( Callback(set_action_runtime, self, runtime), self, run_in=0)
 
+	def change_action(self, action):
+		"""Changes the action of this unit.
+		@param action: the new action"""
+		self._action = action
+		# check if ColorOverlayComponent needs an update
+		if isinstance(self, ComponentHolder):
+			if self.has_component(ColorOverlayComponent):
+				ActionChanged.broadcast(self)
+
 	def act(self, action, facing_loc=None, repeating=False, force_restart=True):
 		"""
 		@param repeating: maps to fife, currently broken: http://fife.trac.cloudforge.com/engine/ticket/708
@@ -107,16 +116,10 @@ class ConcreteObject(WorldObject):
 				facing_loc = self._instance.getFacingLocation()
 			UnitClass.ensure_action_loaded(self._action_set_id, action) # lazy
 			self._instance.act(action+"_"+str(self._action_set_id), facing_loc, repeating)
-		self._action = action
-
-		# check if ColorOverlayComponent needs an update
-		if isinstance(self, ComponentHolder):
-			if self.has_component(ColorOverlayComponent):
-				ActionChanged.broadcast(self)
+			self.change_action(action)
 
 	def has_action(self, action):
-		"""Checks if this unit has a certain action.
-		@param anim: animation id as string"""
+		"""Checks if this unit has a certain action."""
 		return (action in ActionSetLoader.get_sets()[self._action_set_id])
 
 	def remove(self):

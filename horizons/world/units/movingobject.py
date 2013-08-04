@@ -141,6 +141,7 @@ class MovingObject(ComponentHolder, ConcreteObject):
 		self.blocked_callbacks = WeakMethodList(blocked_callback)
 		self._conditional_callbacks = {}
 		self._setup_move(action)
+		self.change_action(action)
 
 		# start moving by regular ticking (only if next tick isn't scheduled)
 		if not self.is_moving():
